@@ -37,4 +37,17 @@ public class GlobalExceptionalHandler {
 
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)   //Indicates that this will be called in case of any exception which is not having handler method in this class
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception, WebRequest request) {
+
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                request.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
